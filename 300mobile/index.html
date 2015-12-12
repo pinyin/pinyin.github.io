@@ -11,14 +11,15 @@
             background-color: #fff6d7;
             overflow-x: hidden;
             font-size: 24px;
-            font-family: "Hiragino Sans GB W3";
+            font-family: "Hiragino Sans GB W3", sans-serif;
         }
 
-        body {
-            padding-bottom: 70px; /* for reply panel */
+        .title {
+            margin-top: 88px; /* for titlebar */
         }
 
         .titlebar {
+            position: fixed;
             height: 88px;
             cursor: default;
             display: flex;
@@ -196,6 +197,7 @@
 
         .pages {
             height: 79px;
+            margin-bottom: 97px; /* reply-panel */
         }
 
         .reply-panel {
@@ -250,11 +252,11 @@
     </div>
 </div>
 
-<div class="title">
+<header class="title">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-</div>
+</header>
 
-<div class="post">
+<article class="post">
     <div class="meta">
         <div class="author">
             <div class="avatar">
@@ -297,9 +299,9 @@
             </div>
         </div>
     </div>
-</div>
+</article>
 
-<div class="post">
+<article class="post">
     <div class="meta">
         <div class="author">
             <div class="avatar">
@@ -353,7 +355,7 @@
             </div>
         </div>
     </div>
-</div>
+</article>
 
 <div class="scroll-panel">
     <div class="up">
