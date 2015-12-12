@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</title>
+    <link href="reset.css" rel="stylesheet"/>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #fff6d7;
+            overflow-x: hidden;
+            font-size: 24px;
+            font-family: "Hiragino Sans GB W3";
+        }
+
+        body {
+            padding-bottom: 70px; /* for reply panel */
+        }
+
+        .titlebar {
+            height: 88px;
+            cursor: default;
+            display: flex;
+            align-items: center;
+
+            width: 100%;
+            background-color: #6e2b19;
+            color: #fff6d7;
+        }
+        .titlebar .back {
+            width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .titlebar .filter {
+            flex-grow: 1;
+            margin: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .titlebar .filter .switch {
+            background-color: #fff6d7;
+            color: #6e2b19;
+            display: flex;
+            border: 3px solid #fff6d7;
+            border-radius: 9px;
+            font-size: 25px;
+        }
+        .titlebar .filter .switch > * {
+            padding: 12px;
+            border-radius: inherit;
+        }
+        .titlebar .filter * + * {
+            padding-left: 13px;
+        }
+        .titlebar .filter .switch.selected.right > *:last-child {
+            background-color: #6e2b19;
+            color: #fff6d7;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .titlebar .filter .switch.selected.left > *:first-child {
+            background-color: #6e2b19;
+            color: #fff6d7;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .titlebar .fav {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .titlebar .fav .icon {
+            width: 30px;
+        }
+
+        .title {
+            background-color: #ffedbb;
+            padding-top: 29px;
+            padding-bottom: 38px;
+            padding-left: 38px;
+            color: #551200;
+            font-size: 30px;
+        }
+
+        .post {
+            background-color: #fff6d7;
+            margin-right: 38px;
+            margin-left: 38px;
+            border-bottom: 1px solid #ffedbb;
+        }
+
+        .post .meta {
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+        }
+        .post .meta .author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 104px;
+        }
+        .post .meta .author .avatar {
+            margin-right: 19px;
+            width: 64px;
+            height: 64px;
+            overflow: hidden; /* TODO */
+        }
+        .post .meta .author .summary {
+            flex-grow: 1;
+        }
+        .post .meta .author .summary .name-uid {
+            display: flex;
+            margin-bottom: 22px;
+        }
+        .post .meta .author .summary .name {
+            margin-right: 10px;
+        }
+        .post .meta .author .summary .uid {
+            font-size: 24px;
+            color: #666666;
+        }
+        .post .meta .author .summary .uid:before { content: '(UID:' }
+        .post .meta .author .summary .uid:after { content: ')' }
+        .post .meta .author .summary .level {
+            font-size: 22px;
+            color: #666666;
+        }
+        .post .meta .floor {
+            align-self: flex-start;
+            display: flex;
+            margin-top: 24px;
+        }
+        .post .meta .floor > * + * {
+            margin-left: 19px;
+        }
+        .post .meta .last-edit {
+            text-align: center;
+            font-size: 18px;
+            color: #666666;
+        }
+
+        .post .content {
+            padding-left: 19px;
+            padding-top: 36px;
+            padding-bottom: 119px;
+            font-size: 24px;
+            color: #551200;
+            /* TODO should posts have height limits? */
+        }
+
+        .post .details {
+            display: flex;
+            flex-direction: column;
+            font-size: 22px;
+            color: #666666;
+        }
+        .post .details .attachments {
+            display: flex;
+        }
+        .post .details .attachment {
+            display: flex;
+        }
+        .post .details .information {
+            display: flex;
+            margin-top: 18px;
+            margin-bottom: 18px;
+        }
+        .post .details .information > * + * {
+            padding-left: 18px;
+        }
+        .post .details .information .more {
+            margin-left: auto;
+        }
+
+        .scroll-panel {
+            position: fixed;
+            right: 10px;
+            bottom: 120px;
+            z-index: 1;
+        }
+        .scroll-panel * {
+            height: 59px
+        }
+        .scroll-panel > * + * {
+            margin-top: 5px
+        }
+
+        .pages {
+            height: 79px;
+        }
+
+        .reply-panel {
+            display: flex;
+            height: 97px;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            align-items: center;
+            padding-left: 39px;
+            padding-right: 39px;
+            background-color: #ffedbb;
+        }
+        .reply-panel > * + *  {
+            margin-left: 19px;
+        }
+        .reply-panel > .add > * { height: 50px; }
+        .reply-panel > .emoji > * { height: 50px; }
+        .reply-panel .content {
+            flex-grow: 1;
+        }
+        .reply-panel .content .input{
+            background-color: #fff6d7;
+            border: 1px solid;
+            border-radius: 6px;
+            height: 67px;
+        }
+        .reply-panel .submit {
+            background-color: #551200;
+            padding: 19px;
+            color: #fff;
+            border-radius: 9px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="titlebar">
+    <div class="back">
+        < <!--TODO didn't find left arrow icon-->
+    </div>
+    <div class="filter">
+        <div class="switch selected right">
+            <div class="all">查看全部</div>
+            <div class="only-o ">只看楼主</div>
+        </div>
+    </div>
+    <div class="fav">
+        <img class="icon" src="fav.png"/>
+    </div>
+</div>
+
+<div class="title">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</div>
+
+<div class="post">
+    <div class="meta">
+        <div class="author">
+            <div class="avatar">
+                <img src="avatar.jpeg"/>
+            </div>
+            <div class="summary">
+                <div class="name-uid">
+                    <div class="name">pinyin</div>
+                    <div class="uid">123456</div>
+                </div>
+                <div class="level">Yuru Yuri</div>
+            </div>
+            <div class="floor">
+                <div class="report-abuse">举报</div>
+                <div class="order">1#</div>
+            </div>
+        </div>
+        <div class="last-edit">本帖最后由 拼音 于 1970-1-1 00:00 编辑</div>
+    </div>
+    <div class="content">
+        Pellentesque eu lacus auctor, laoreet felis tincidunt, vulputate elit. Suspendisse risus nulla, molestie eget posuere vel, rutrum interdum purus. Donec eleifend vestibulum efficitur. Praesent pretium, dui et sodales eleifend, lacus ligula scelerisque tortor, a elementum velit ipsum in est. Donec rhoncus, enim nec viverra gravida, lacus sapien congue nisi, lacinia convallis diam ligula in mauris. Phasellus varius vulputate mauris, eu rhoncus lacus. Ut sed odio sed tortor sollicitudin imperdiet. Aliquam ex mauris, blandit ut diam eu, auctor pulvinar elit.
+    </div>
+    <div class="details">
+        <div class="attachments">
+            <div class="attachment">
+                <img class="icon" src="attachment.png"/>
+                <div class="size">10KB</div>
+            </div>
+        </div>
+        <div class="information">
+            <div class="time">1970-1-1 00:00</div>
+            <div class="edit">编辑</div>
+            <div class="delete">删除</div>
+            <div class="more">...</div>
+            <div class="more-menu">
+                <div class="rank"></div>
+                <div class="refer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="scroll-panel">
+    <div class="up">
+        <img src="up.png"/>
+    </div>
+    <div class="down">
+        <img src="down.png"/>
+    </div>
+</div>
+
+<div class="pages">
+    <div class="previous"></div>
+    <div class="list">
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+        <div class="page"></div>
+    </div>
+    <div class="next"></div>
+</div>
+
+<div class="reply-panel">
+    <div class="add">
+        <img src="add-attachment.png"/>
+    </div>
+    <div class="emoji">
+        <img src="emoji.png"/>
+    </div>
+    <div class="content">
+        <div class="input"></div>
+    </div>
+    <div class="submit">发送</div>
+</div>
+
+</body>
+</html>
